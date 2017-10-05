@@ -17,9 +17,14 @@ app.get('*', (req,res) => {
 
 socketIO.sockets.on('connection', (socket) => {
     connections.push(socket);
-    console.log(`${connections.length} active connections...`);
+    console.log(`connection added : ${connections.length} active connections...`);
 
-    socket.on('send message', () => {
-        console.log('dsff');
+    socket.on('disconnect', () => {
+        connections.splice(connections.indexOf(socket), 1);
+        console.log(`connection removed : ${connections.length} active connections...`);
+    })
+
+    socket.on('send message', (newMessage) => {
+        socketIO.sockets.emit('new message', {msg: newMessage});
     });
 });

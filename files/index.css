@@ -4,3 +4,9 @@ body {
 .chat-form {
     display: none;
 }
+.message-text {
+    padding: 10px 20px;
+    margin: 10px auto;
+    background: lightcyan;
+    border-radius: 20px;
+}
