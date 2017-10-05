@@ -18,4 +18,8 @@ app.get('*', (req,res) => {
 socketIO.sockets.on('connection', (socket) => {
     connections.push(socket);
     console.log(`${connections.length} active connections...`);
+
+    socket.on('send message', () => {
+        console.log('dsff');
+    });
 });
