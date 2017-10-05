@@ -1,1 +1,2 @@
-#sample chat-app using socket.io
+# heysup
+sample chat-app using socket.io
