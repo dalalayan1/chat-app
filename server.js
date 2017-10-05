@@ -6,7 +6,7 @@ const socketIO = require('socket.io').listen(server);
 
 let users = [];
 let connections = [];
-let port = process.env.PORT || 3000;
+let port = process.env.PORT || 8001;
 
 server.listen(port, () => console.log(`server running on ${port} port`));
 
