@@ -4,6 +4,8 @@ $( document ).ready(function() {
         $chatForm = $('#chatForm'),
         $message = $('#message'),
         $chatArea = $('#chatArea'),
+        $onlineUsers = $('#onlineUsers'),
+        $usersList = $('#usersList'),
         socket;
     
     
@@ -18,27 +20,41 @@ $( document ).ready(function() {
     })
 
     startActiveConnection = (username) => {
+        socket.emit('new user', username);
         showChatArea(username);
     }
 
     showChatArea = (username) => {
         $loginForm.css('display','none');
         $chatForm.css('display','block');
+        $onlineUsers.css('display','block');
         $($chatForm).children('h4').html(`Hey ${username}! Start texting...`)
         $chatForm.submit((e) => sendMessage(e, $message.val()));
     }
 
     sendMessage = (evt, message) => {
     evt.preventDefault();
-    if (message === '') {
+    if(message === '') {
         return;
     }
+    $('#message').val('');
     socket.emit('send message', message);
     }
 
-    socket.on('new message', (messageRecieved) => {
+    socket.on('add user', (onlineUsers) => {
+        $usersList.html('');
+        let html = '';
+        onlineUsers.forEach((eachUser) => {
+            html += (`<li class="user">
+                                    ${eachUser}
+                                    </li>`);
+        })
+        $usersList.html(html);
+    });
+
+    socket.on('new message', (data) => {
         $chatArea.append(`<div class="message-text">
-                            ${messageRecieved.msg}
+                            <b>${data.user}</b> : ${data.msg}
                             </div>`);
     });
 

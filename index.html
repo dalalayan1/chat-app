@@ -14,14 +14,18 @@
                 <form class="login-form col-md-6" id="loginForm">
                     <h4>Please create a username to continue...</h4>
                     <input type="text" id="username" class="col-md-4 form-control" placeholder="Username...">
-                    <input type="submit" id="loginButton" class="btn btn-primary">
+                    <input type="submit" id="loginButton" class="btn btn-primary" value="Register">
                 </form>
+                <div class="online-users col-md-6" id="onlineUsers">
+                    <h4>Online users :</h4>
+                    <ul class="users-list" id="usersList"></ul>
+                </div>
                 <form class="chat-form col-md-6" id="chatForm">
-                        <h4></h4>
-                        <textarea id="message" class="col-md-4 form-control" placeholder="Username..."></textarea>
-                        <input type="submit" id="loginButton" class="btn btn-primary">
+                    <div id="chatArea"></div>
+                    <h4></h4>
+                    <textarea id="message" class="col-md-4 form-control"></textarea>
+                    <input type="submit" id="loginButton" class="btn btn-primary" value="Send">
                 </form>
-                <div class="col-md-6" id="chatArea"></div>
             </div>
         </div>
     </body>

@@ -1,7 +1,8 @@
 body {
     margin: 20px auto auto;
 }
-.chat-form {
+.chat-form,
+.online-users {
     display: none;
 }
 .message-text {
@@ -9,4 +10,19 @@ body {
     margin: 10px auto;
     background: lightcyan;
     border-radius: 20px;
+}
+.users-list {
+    padding: 0;
+}
+.user {
+    list-style-type: none;
+}
+.user:before {
+    content: '';
+    width: 10px;
+    height: 10px;
+    display: inline-block;
+    border-radius: 50%;
+    margin-right: 10px;
+    background: limegreen;
 }
