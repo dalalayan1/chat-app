@@ -53,9 +53,11 @@ $( document ).ready(function() {
     });
 
     socket.on('new message', (data) => {
-        $chatArea.append(`<div class="message-text">
-                            <b>${data.user}</b> : ${data.msg}
-                            </div>`);
+        data.forEach( (datum) => {
+            $chatArea.append(`<div class="message-text">
+                <b>${datum.user}</b> : ${datum.msg}
+                </div>`);
+        });
     });
 
 });
