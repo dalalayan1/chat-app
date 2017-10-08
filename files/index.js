@@ -6,6 +6,7 @@ $( document ).ready(function() {
         $chatArea = $('#chatArea'),
         $onlineUsers = $('#onlineUsers'),
         $usersList = $('#usersList'),
+        $status = $('#status'),
         socket;
     
     
@@ -29,17 +30,22 @@ $( document ).ready(function() {
         $chatForm.css('display','block');
         $onlineUsers.css('display','block');
         $($chatForm).children('h4').html(`Hey ${username}! Start texting...`)
-        $chatForm.submit((e) => sendMessage(e, $message.val()));
+        $chatForm.submit((e) => sendMessage(e, username, $message.val()));
     }
 
-    sendMessage = (evt, message) => {
+    sendMessage = (evt, username, message) => {
     evt.preventDefault();
     if(message === '') {
         return;
     }
     $('#message').val('');
-    socket.emit('send message', message);
+    socket.emit('send message', {name: username, msg: message});
     }
+
+    socket.on('status', (msg) => {
+        console.log('st ',msg)
+        $status.html(msg);
+    })
 
     socket.on('add user', (onlineUsers) => {
         $usersList.html('');
@@ -55,7 +61,7 @@ $( document ).ready(function() {
     socket.on('new message', (data) => {
         data.forEach( (datum) => {
             $chatArea.append(`<div class="message-text">
-                <b>${datum.user}</b> : ${datum.msg}
+                <b>${datum.name}</b> : ${datum.msg}
                 </div>`);
         });
     });
