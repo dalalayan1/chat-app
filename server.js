@@ -31,47 +31,47 @@ const loadDoc = (socket) => {
 
 
 socketIO.on('connection', (socket) => {
-        connections.push(socket);
-        console.log(`connection added : ${connections.length} active connections...`);
+    connections.push(socket);
+    console.log(`connection added : ${connections.length} active connections...`);
 
-        loadDoc(socket);
+    loadDoc(socket);
 
-        socket.on('disconnect', () => {
-            users.splice(users.indexOf(socket.username), 1);
-            updateOnlineUsers();
-            connections.splice(connections.indexOf(socket), 1);
-            console.log(`connection removed : ${connections.length} active connections...`);
-        });
-    
-        socket.on('new user', (newUser) => {
-            users.push(newUser);
-            console.log(users)
-            socket.username = newUser;
-            updateOnlineUsers();
-        });
-    
-        socket.on('send message', (data) => {
-            let { name } = data;
-            let { msg } = data;
+    socket.on('disconnect', () => {
+        users.splice(users.indexOf(socket.username), 1);
+        updateOnlineUsers();
+        connections.splice(connections.indexOf(socket), 1);
+        console.log(`connection removed : ${connections.length} active connections...`);
+    });
 
-            if(name === '' || msg === '') {
-                return socket.emit('status', 'Please enter name & msg!');
-            }
+    socket.on('new user', (newUser) => {
+        users.push(newUser);
+        console.log(users)
+        socket.username = newUser;
+        updateOnlineUsers();
+    });
 
-            request.post({
-                url: url, 
-                body: data,
-                json: true
-            }, (err, response, body) => {
-                if (err) throw err;
-                socketIO.emit('new message', JSON.stringify([body]));
-                console.log(body);
-            });
-        });
-    
-        updateOnlineUsers = () => {
-            socketIO.emit('add user', users);
+    socket.on('send message', (data) => {
+        let { name } = data;
+        let { msg } = data;
+
+        if(name === '' || msg === '') {
+            return socket.emit('status', 'Please enter name & msg!');
         }
+
+        request.post({
+            url: url, 
+            body: data,
+            json: true
+        }, (err, response, body) => {
+            if (err) throw err;
+            socketIO.emit('new message', JSON.stringify([body]));
+            console.log(body);
+        });
+    });
+
+    updateOnlineUsers = () => {
+        socketIO.emit('add user', users);
+    }
 });
 
 server.listen(port, () => console.log(`server running on ${port} port`));
