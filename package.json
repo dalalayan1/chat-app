@@ -7,11 +7,12 @@
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
-  "author": "",
+  "author": "Ayan Dalal<dalalayan1@gmail.com>",
   "license": "ISC",
   "dependencies": {
-    "express": "*",
+    "express": "^4.16.1",
     "mongodb": "^2.2.31",
-    "socket.io": "*"
+    "request": "^2.83.0",
+    "socket.io": "^2.0.3"
   }
 }

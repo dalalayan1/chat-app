@@ -58,10 +58,12 @@ $( document ).ready(function() {
         $usersList.html(html);
     });
 
-    socket.on('new message', (data) => {
+    socket.on('new message', (rawData) => {
+        debugger
+        const data = JSON.parse(rawData);
         data.forEach( (datum) => {
             $chatArea.append(`<div class="message-text">
-                <b>${datum.name}</b> : ${datum.msg}
+                <b>${datum.name.toUpperCase()}</b> : ${datum.msg}
                 </div>`);
         });
     });

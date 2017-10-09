@@ -3,28 +3,38 @@ const express = require('express');
 const app = express();
 const server = require('http').createServer(app);
 const socketIO = require('socket.io').listen(server).sockets;
-const mongo = require('mongodb').MongoClient();
+const request = require('request');
 
 let users = [];
 let connections = [];
 let port = process.env.PORT || 8001;
 
-mongo.connect('mongodb://127.0.0.1/mongochat', (err, db) => {
-    if( err ) throw err;
+var db = 'chats',
+    collection = 'chat-msgs',
+    apiKey = 'uqqEctpkJziPyUmQJ_McM7Bers0p3rlH',
+    url = `https://api.mlab.com/api/1/databases/${db}/collections/${collection}?apiKey=${apiKey}`;
 
-    console.log('mongodb connected...');
+const loadDoc = (socket) => {
+    let res;
+    request(url, (error, response, body) => {
+        if (error) throw new error;
+        else if (!error && response.statusCode == 200) {
+            socket.emit('new message', body);
+        }
+        else {
+            console.log('Bad API ',response.statusCode);
+            return null;
+        }
+        return res;
+    })
+}
 
-    socketIO.on('connection', (socket) => {
 
-        let chats = db.collection('chats');
+socketIO.on('connection', (socket) => {
         connections.push(socket);
         console.log(`connection added : ${connections.length} active connections...`);
 
-        chats.find().sort({_id:1}).toArray( (err, res) => {
-            if( err ) throw err;
-
-            socket.emit('new message', res);
-        })
+        loadDoc(socket);
 
         socket.on('disconnect', () => {
             users.splice(users.indexOf(socket.username), 1);
@@ -48,16 +58,20 @@ mongo.connect('mongodb://127.0.0.1/mongochat', (err, db) => {
                 return socket.emit('status', 'Please enter name & msg!');
             }
 
-            chats.insert({name: name, msg: msg}, () => {
-                socketIO.emit('new message', [data]);
-                socket.emit('status', 'Message sent!');
+            request.post({
+                url: url, 
+                body: data,
+                json: true
+            }, (err, response, body) => {
+                if (err) throw err;
+                socketIO.emit('new message', JSON.stringify([body]));
+                console.log(body);
             });
         });
     
         updateOnlineUsers = () => {
             socketIO.emit('add user', users);
         }
-    });
 });
 
 server.listen(port, () => console.log(`server running on ${port} port`));
