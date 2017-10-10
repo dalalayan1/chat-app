@@ -59,7 +59,6 @@ $( document ).ready(function() {
     });
 
     socket.on('new message', (rawData) => {
-        debugger
         const data = JSON.parse(rawData);
         data.forEach( (datum) => {
             $chatArea.append(`<div class="message-text">

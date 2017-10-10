@@ -1,5 +1,24 @@
 body {
     margin: 20px auto auto;
+    color: #4285f4;
+}
+.login-form {
+    top: 30vh;
+    left: 50vw;
+    padding: 50px;
+    border-radius: 20px 0;
+    transform: translateX(-50%);
+    box-shadow: 0 1px 35px rgba(0, 0, 0, .5);
+}
+.login-form .username {
+    margin-bottom: 10px;
+}
+.login-form .login-btn {
+    background-color: #4285f4;
+    border: none;
+}
+.login-form .login-btn:hover {
+    opacity: 0.5;
 }
 .chat-form,
 .online-users {

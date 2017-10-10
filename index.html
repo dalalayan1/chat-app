@@ -9,13 +9,13 @@
         <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.0.3/socket.io.js"></script>
     </head>
     <body>
+        <form class="login-form col-md-4" id="loginForm">
+            <h4>Please create a username to continue...</h4>
+            <input type="text" id="username" class="username form-control" placeholder="Username...">
+            <input type="submit" id="loginButton" class="btn btn-primary login-btn" value="Register">
+        </form>
         <div class="container">
             <div class="row">
-                <form class="login-form col-md-6" id="loginForm">
-                    <h4>Please create a username to continue...</h4>
-                    <input type="text" id="username" class="col-md-4 form-control" placeholder="Username...">
-                    <input type="submit" id="loginButton" class="btn btn-primary" value="Register">
-                </form>
                 <div class="online-users col-md-6" id="onlineUsers">
                     <h4>Online users :</h4>
                     <ul class="users-list" id="usersList"></ul>
