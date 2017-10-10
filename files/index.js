@@ -34,6 +34,7 @@ $( document ).ready(function() {
     }
 
     sendMessage = (evt, username, message) => {
+        debugger
     evt.preventDefault();
     if(message === '') {
         return;
