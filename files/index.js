@@ -12,16 +12,16 @@ $( document ).ready(function() {
     
     socket = io.connect();
 
-    $loginForm.submit((evt)=> {
-        evt.preventDefault();
-        if ($username.val() === '') {
-            return;
-        }
-        startActiveConnection($username.val());
-    })
-
-    startActiveConnection = (username) => {
-        socket.emit('new user', username);
+    onSignIn = (googleUser) => {
+        let profile = googleUser.getBasicProfile();
+        let userDetails = {
+            id: profile.getId(),
+            name: profile.getName(),
+            img: profile.getImageUrl(),
+            email: profile.getEmail()
+        };
+        console.log(userDetails)
+        socket.emit('new user', userDetails);
         showChatArea(username);
     }
 

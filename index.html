@@ -2,17 +2,20 @@
     <head>
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="google-signin-client_id" content="836465893189-pack1gcoekgtjn9u0aisgp3pdgv6c0iv.apps.googleusercontent.com">
         <title>HEYSUP</title>
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
         <link rel="stylesheet" href="/index.css">
         <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.0.3/socket.io.js"></script>
+        <script src="https://apis.google.com/js/platform.js" async defer></script>
     </head>
     <body>
         <form class="login-form col-md-4" id="loginForm">
             <h4>Please create a username to continue...</h4>
             <input type="text" id="username" class="username form-control" placeholder="Username...">
             <input type="submit" id="loginButton" class="btn btn-primary login-btn" value="Register">
+            <div class="g-signin2" data-onsuccess="onSignIn"></div>
         </form>
         <div class="container">
             <div class="row">
