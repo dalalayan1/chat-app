@@ -11,12 +11,11 @@
         <script src="https://apis.google.com/js/platform.js" async defer></script>
     </head>
     <body>
-        <form class="login-form col-md-4" id="loginForm">
-            <h4>Please create a username to continue...</h4>
-            <input type="text" id="username" class="username form-control" placeholder="Username...">
-            <input type="submit" id="loginButton" class="btn btn-primary login-btn" value="Register">
-            <div class="g-signin2" data-onsuccess="onSignIn"></div>
-        </form>
+        <div class="login-section col-md-4" id="loginSection">
+            <h4>Sign in to continue</h4>
+            <div class="g-signin2 login-btn" data-onsuccess="onSignIn"></div>
+        </div>
+        <button id="logoutBtn" class="logout-btn btn" onclick="signOut()">Sign out</button>
         <div class="container">
             <div class="row">
                 <div class="online-users col-md-6" id="onlineUsers">
@@ -24,7 +23,7 @@
                     <ul class="users-list" id="usersList"></ul>
                 </div>
                 <form class="chat-form col-md-6" id="chatForm">
-                    <div id="chatArea"></div>
+                    <div id="chatArea" class="chat-area"></div>
                     <h4></h4>
                     <input id="message" class="col-md-4 form-control">
                     <input type="submit" id="loginButton" class="btn btn-primary" value="Send">

@@ -1,6 +1,7 @@
 $( document ).ready(function() {
     let $username = $('#username'),
-        $loginForm = $('#loginForm'),
+        $loginSection = $('#loginSection'),
+        $logoutBtn = $('#logoutBtn'),
         $chatForm = $('#chatForm'),
         $message = $('#message'),
         $chatArea = $('#chatArea'),
@@ -22,25 +23,36 @@ $( document ).ready(function() {
         };
         console.log(userDetails)
         socket.emit('new user', userDetails);
-        showChatArea(username);
+        showChatArea(userDetails);
     }
 
-    showChatArea = (username) => {
-        $loginForm.css('display','none');
+    showChatArea = (userDetails) => {
+        $loginSection.css('display','none');
         $chatForm.css('display','block');
         $onlineUsers.css('display','block');
-        $($chatForm).children('h4').html(`Hey ${username}! Start texting...`)
-        $chatForm.submit((e) => sendMessage(e, username, $message.val()));
+        $logoutBtn.css('display','block');
+        $($chatForm).children('h4').html(`Hey ${userDetails.name}! Start texting...`)
+        $chatForm.submit((e) => sendMessage(e, userDetails, $message.val()));
     }
 
-    sendMessage = (evt, username, message) => {
-        debugger
+    signOut = () => {
+        let auth2 = gapi.auth2.getAuthInstance();
+        auth2.signOut().then( () => {
+        console.log('User signed out.');
+        $loginSection.css('display','block');
+        $chatForm.css('display','none');
+        $onlineUsers.css('display','none');
+        $logoutBtn.css('display','none');
+        });
+    }
+
+    sendMessage = (evt, userDetails, message) => {
     evt.preventDefault();
     if(message === '') {
         return;
     }
     $('#message').val('');
-    socket.emit('send message', {name: username, msg: message});
+    socket.emit('send message', {details: userDetails, msg: message});
     }
 
     socket.on('status', (msg) => {
@@ -53,8 +65,9 @@ $( document ).ready(function() {
         let html = '';
         onlineUsers.forEach((eachUser) => {
             html += (`<li class="user">
-                                    ${eachUser}
-                                    </li>`);
+                        <img class="profile-pic" src="${eachUser.img}">
+                        ${eachUser.name}
+                    </li>`);
         })
         $usersList.html(html);
     });
@@ -63,7 +76,7 @@ $( document ).ready(function() {
         const data = JSON.parse(rawData);
         data.forEach( (datum) => {
             $chatArea.append(`<div class="message-text">
-                <b>${datum.name.toUpperCase()}</b> : ${datum.msg}
+                <b>${datum.details.name.toUpperCase()}</b> : ${datum.msg}
                 </div>`);
         });
     });

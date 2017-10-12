@@ -9,7 +9,7 @@ let users = [];
 let connections = [];
 let port = process.env.PORT || 8001;
 
-var db = 'chats',
+let db = 'chats',
     collection = 'chat-msgs',
     apiKey = 'uqqEctpkJziPyUmQJ_McM7Bers0p3rlH',
     url = `https://api.mlab.com/api/1/databases/${db}/collections/${collection}?apiKey=${apiKey}`;
@@ -37,7 +37,9 @@ socketIO.on('connection', (socket) => {
     loadDoc(socket);
 
     socket.on('disconnect', () => {
-        users.splice(users.indexOf(socket.username), 1);
+        users = users.find((user, i) => {
+            return user.id === socket.userDetails.id;
+        });
         updateOnlineUsers();
         connections.splice(connections.indexOf(socket), 1);
         console.log(`connection removed : ${connections.length} active connections...`);
@@ -46,15 +48,15 @@ socketIO.on('connection', (socket) => {
     socket.on('new user', (newUser) => {
         users.push(newUser);
         console.log(users)
-        socket.username = newUser;
+        socket.userDetails = newUser;
         updateOnlineUsers();
     });
 
     socket.on('send message', (data) => {
-        let { name } = data;
+        let { details } = data;
         let { msg } = data;
 
-        if(name === '' || msg === '') {
+        if(details === '' || msg === '') {
             return socket.emit('status', 'Please enter name & msg!');
         }
 
